@@ -17,10 +17,10 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: httpbin
-	  # Using a multi arch image as my rpi nodes are arm arch.
-	  image: mccutchen/go-httpbin:v2.8.0
+          # Using a multi-arch image as my RPi nodes are ARM architecture.
+          image: mccutchen/go-httpbin:v2.8.0
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           resources:
             requests:
               cpu: "100m"
@@ -33,3 +33,20 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1000
+          readinessProbe:
+            httpGet:
+              path: /status/200
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /status/200
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+            timeoutSeconds: 2
