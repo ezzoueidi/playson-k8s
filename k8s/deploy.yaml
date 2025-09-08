@@ -17,7 +17,8 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: httpbin
-          image: kennethreitz/httpbin:latest
+	  # Using a multi arch image as my rpi nodes are arm arch.
+	  image: mccutchen/go-httpbin:v2.8.0
           ports:
             - containerPort: 80
           resources:
